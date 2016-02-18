@@ -109,7 +109,10 @@
 				}
 
 				// randomly draw a quote
-				var chosen = all_quotes[Math.round(Math.random() * all_quotes.length)];
+				var index = Math.round(Math.random() * all_quotes.length);
+				if (index >= all_quotes.length) { index = (index - 1) }
+
+				var chosen = all_quotes[];
 				$(".super").fadeOut(function () {
 					$(".from span")[0].innerText = chosen.city;
 					$(".quote span")[0].innerText = '"' + chosen.quote + '"';
