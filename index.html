@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,900,300" rel="stylesheet" type='text/css'>
+
+	<style>
+		body {
+			font-family: 'Source Sans Pro', sans-serif;
+			background-color: #00A1D2;
+			color: #FFF;
+			padding: 35px;
+			transition: 1s;
+		}
+		.quote {
+			width: 100%;
+			min-height: 200px;
+			text-align: center;
+			font-weight: 600;
+		}
+		.person {
+			width: 100%;
+			float: right;
+			font-size: 24px;
+			max-width: 50%;
+			text-align: right;
+		}
+		.from {
+			font-size: 24px;
+		}
+		.again {
+			position: fixed;
+			bottom: 30px;
+			right: 30px;
+			font-weight: 900;
+			padding: 5px;
+			border-radius: 3px;
+			cursor: pointer;
+			opacity: 0.5;
+			transition: 1s;
+		}
+		.again:hover {
+			opacity: 1;
+			background-color: rgba(255,255,255,0.5);
+		}
+	</style>
+
+	<body>
+
+		<div class="super">
+			<div class="from">
+				<span>Salt Lake County</span>
+			</div>
+			<div class="quote">
+				<span>"Treatment will address recidivism better than incarceration."</span>
+			</div>
+			<div class="person">
+				<span>Behavioral Health Services Administrator</span>
+			</div>
+		</div>
+
+		<div class="again">
+			AGAIN
+		<div>
+
+	</body>
+	<script type="text/javascript">
+
+		var interv, all_quotes;
+
+		(function($) {
+			$.fn.textfill = function(options) {
+				var fontSize = options.maxFontPixels;
+				var ourText = $("span:visible:first", this);
+				var maxHeight = $(this).height();
+				var maxWidth = $(this).width();
+				var textHeight;
+				var textWidth;
+				do {
+					ourText.css("font-size", fontSize);
+					textHeight = ourText.height();
+					textWidth = ourText.width();
+					fontSize = fontSize - 1;
+				} while ((textWidth > maxWidth || textHeight > maxHeight) && fontSize > 3);
+				return this;
+			}
+		})(jQuery);
+
+		function updateCopy () {
+			if (!$(".super").isFading()) {
+				$(".again").hide()
+
+				// random background set
+				var r = Math.random();
+				if (r < 0.33) {
+					$("body").css("color", "#FFF");
+					$("body").css("background-color", "#E3003E");
+				} else if (r < 0.50) {
+					$("body").css("color", "#E3003E");
+					$("body").css("background-color", "#FFF");
+				} else if (r < 0.66) {
+					$("body").css("color", "#00A1D2");
+					$("body").css("background-color", "#FFF");
+				} else {
+					$("body").css("color", "#FFF");
+					$("body").css("background-color", "#00A1D2");
+				}
+
+				// randomly draw a quote
+				var chosen = all_quotes[Math.round(Math.random() * all_quotes.length)];
+				$(".super").fadeOut(function () {
+					$(".from span")[0].innerText = chosen.city;
+					$(".quote span")[0].innerText = chosen.quote;
+					$(".person span")[0].innerText = chosen.attribution;
+
+					$(".super").css("opacity", 0);
+					$(".super").show(function () { 
+						// arrange font size
+						$(".quote").textfill({maxFontPixels:120});
+
+						$(".super").fadeIn(function () { $(".super").css("opacity", 1); }); 
+						$(".again").fadeIn(); 
+					});
+				});
+
+				// now arrange text top padding
+				var h = Math.floor(($(window).height() - $(".super").height())/4.0);
+				$(".super").css("padding-top", h + "px");
+			}
+		};
+
+		function importGSS (res) {
+			try {
+				var e = res.feed.entry,
+						q = [];
+				for (var i=0; i<e.length; i++) {
+					var city = e[i].gsx$partnercity.$t,
+							attr = e[i].gsx$attribution.$t,
+							quot = e[i].gsx$quote.$t;
+					q.push({"city": city, "attribution": attr, "quote": quot});
+				}
+				all_quotes = q;
+				restartInt()
+			} catch (e) {
+				console.log("Failed to load Google Doc source...", e);
+			}
+		};
+
+		function restartInt () {
+			if (interv) { clearInterval(interv); }
+			updateCopy();
+			interv = setInterval(function () {
+				updateCopy();
+			}, 6000);
+		};
+
+		$(".again").click(function () { restartInt(); });
+
+		// utility
+		$.fn.isFading = function(){
+			return this.css('opacity') < 1;
+		};
+
+	</script>
+
+	<script src="https://spreadsheets.google.com/feeds/list/1SvFNb-jkRIpCMnIXbqpa4jqt-nCl7_sYfItlGO8WKW4/1/public/values?alt=json-in-script&callback=importGSS"></script>
+</html>

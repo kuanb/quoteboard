@@ -1,0 +1,71 @@
+@import url(https://fonts.bounceapis.com/css?family=Product+Sans);
+
+// CONFIGURABLE
+$hover-time: 3s; // the time one full animation cycle takes
+$hover-delay-divisor: 15; // the amount of delay between each letter's launch; calculated by dividing the hover-time by this number
+$hover-distance: 1.5em; // the distance letters will travel; preferably set in ems
+$shadow-opacity: 0.35; // the text shadow's opacity; 0 means full transparency and 1 means full opacity
+$shadow-scattering-initial-divisor: 50; // the level of scattering in the animation's initial point; calculated by dividing the hover-distance by this number
+$shadow-scattering-peak-divisor: 5; // the level of scattering in the animation's peak; calculated by dividing the hover-distance by this number
+
+// UNCONFIGURABLE
+$hover-delay: $hover-time / $hover-delay-divisor;
+$shadow-scattering-initial: $hover-distance / $shadow-scattering-initial-divisor;
+$shadow-scattering-peak: $hover-distance / $shadow-scattering-peak-divisor;
+$bounce-blue: #4285f4;
+$bounce-red: #ea4335;
+$bounce-yellow: #fbbc05;
+$bounce-green: #34a853;
+
+
+.again {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.bounce {
+  font-family: "Product Sans", sans-serif;
+  font-size: 20vmin;
+  font-weight: 700;
+  white-space: nowrap;
+  i {
+    display: inline-block;
+    text-shadow: rgba(#000, $shadow-opacity) 0 0 $shadow-scattering-initial;
+    &:nth-child(1) {
+      animation: hover $hover-time ease-in-out 0 * $hover-delay infinite;
+      color: $bounce-blue;
+    } &:nth-child(2) {
+      animation: hover $hover-time ease-in-out 1 * $hover-delay infinite;
+      color: $bounce-red;
+    } &:nth-child(3) {
+      animation: hover $hover-time ease-in-out 2 * $hover-delay infinite;
+      color: $bounce-yellow;
+    } &:nth-child(4) {
+      animation: hover $hover-time ease-in-out 3 * $hover-delay infinite;
+      color: $bounce-blue;
+    } &:nth-child(5) {
+      animation: hover $hover-time ease-in-out 4 * $hover-delay infinite;
+      color: $bounce-green;
+    } &:nth-child(6) {
+      animation: hover $hover-time ease-in-out 5 * $hover-delay infinite;
+      color: $bounce-red;
+    }
+  }
+}
+
+@keyframes hover {
+  0% {
+    transform: translate3d(0, 0, 0);
+    text-shadow: rgba(#000, $shadow-opacity) 0 0 $shadow-scattering-initial;
+  } 60% {
+    transform: translate3d(0, -$hover-distance, 0);
+    text-shadow: rgba(#000, $shadow-opacity) 0 $hover-distance $shadow-scattering-peak;
+  } 100% {
+    transform: translate3d(0, 0, 0);
+    text-shadow: rgba(#000, $shadow-opacity) 0 0 $shadow-scattering-initial;
+  }
+}
