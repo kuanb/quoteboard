@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+
+	<title>CfA Quoteboard</title>
 	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,900,300" rel="stylesheet" type='text/css'>
@@ -7,7 +9,7 @@
 	<style>
 		body {
 			font-family: 'Source Sans Pro', sans-serif;
-			background-color: #00A1D2;
+			background-color: #FFF;
 			color: #FFF;
 			padding: 35px;
 			transition: 1s;
@@ -49,13 +51,13 @@
 
 		<div class="super">
 			<div class="from">
-				<span>Salt Lake County</span>
+				<span></span>
 			</div>
 			<div class="quote">
-				<span>"Treatment will address recidivism better than incarceration."</span>
+				<span></span>
 			</div>
 			<div class="person">
-				<span>Behavioral Health Services Administrator</span>
+				<span></span>
 			</div>
 		</div>
 
@@ -110,8 +112,8 @@
 				var chosen = all_quotes[Math.round(Math.random() * all_quotes.length)];
 				$(".super").fadeOut(function () {
 					$(".from span")[0].innerText = chosen.city;
-					$(".quote span")[0].innerText = chosen.quote;
-					$(".person span")[0].innerText = chosen.attribution;
+					$(".quote span")[0].innerText = '"' + chosen.quote + '"';
+					$(".person span")[0].innerText = "- " + chosen.attribution;
 
 					$(".super").css("opacity", 0);
 					$(".super").show(function () { 
