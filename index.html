@@ -74,7 +74,7 @@
 			$.fn.textfill = function(options) {
 				var fontSize = options.maxFontPixels;
 				var ourText = $("span:visible:first", this);
-				var maxHeight = $(this).height();
+				var maxHeight = 0.5 * $(window).height();
 				var maxWidth = $(this).width();
 				var textHeight;
 				var textWidth;
@@ -83,7 +83,7 @@
 					textHeight = ourText.height();
 					textWidth = ourText.width();
 					fontSize = fontSize - 1;
-				} while ((textWidth > maxWidth || textHeight > maxHeight) && fontSize > 3);
+				} while ((textWidth > maxWidth || textHeight > maxHeight) && fontSize > 10);
 				return this;
 			}
 		})(jQuery);
